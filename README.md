@@ -22,6 +22,23 @@ This is a default screenshot app for Linux Deepin.
     - secondly, run `cd deepin-screenshot`;
     - thirdly, make a directory: build; run `cmake ../`; `make`; `make install`
 
+```
+sudo apt install debhelper
+sudo apt install cmake qt5-default qtbase5-dev pkg-config libqt5svg5-dev libqt5x11extras5-dev qttools5-dev-tools
+sudo apt install libxcb-util0-dev libstartup-notification0-dev
+sudo apt install qtbase5-private-dev qtmultimedia5-dev x11proto-xext-dev libmtdev-dev libegl1-mesa-dev x11proto-record-dev libxtst-dev
+sudo apt install libudev-dev libfontconfig1-dev libfreetype6-dev libglib2.0-dev libxrender-dev
+sudo apt install libdtkwidget-dev libdtkwm-dev deepin-gettext-tools
+
+cd deepin-screenshot
+md builc
+cd build
+cmake ../
+make
+sudo make install
+
+```
+
 ## Usage
 Run the command: `deepin-screenshot`
 
