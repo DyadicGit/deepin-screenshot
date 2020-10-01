@@ -1400,9 +1400,34 @@ bool MainWindow::saveAction(const QPixmap &pix)
     }
 
     if (copyToClipboard) {
-        Q_ASSERT(!screenShotPix.isNull());
-        QClipboard* cb = qApp->clipboard();
-        cb->setPixmap(screenShotPix, QClipboard::Clipboard);
+       // Q_ASSERT(!screenShotPix.isNull());
+       // QClipboard* cb = qApp->clipboard();
+       // cb->setPixmap(screenShotPix, QClipboard::Clipboard);
+       
+         bool tmpFileCreated = false;
+ 
+         if (!QFile("/usr/bin/xclip").exists()) {
+             qCritical() << "Copying to clipboard failed. Please install xclip!";
+             return false;
+         } else {
+ 
+             QTemporaryFile file;
+             if (file.open()) {
+                 tmpFileCreated = true;
+                 screenShotPix.save(file.fileName(), "PNG");
+                 qDebug() << "tmp filename: " << file.fileName();
+                 QString command = QString("/usr/bin/xclip -selection clipboard -t image/png -i %1").arg(file.fileName());
+                 if(m_saveFileName != "") {
+                     command = QString("/usr/bin/xclip -selection clipboard -t image/png -i %1").arg(m_saveFileName); // if auto save + copy to clipboard selected, use saved file
+                 }
+                 qDebug() << "command: " << command;
+                 QProcess::execute(command);
+             } // do not add else part to not distrubt tmp file destruction process
+         }
+         if(!tmpFileCreated) {
+             qCritical() << "Saving image into temporary file failed!";
+             return false;
+         }
     }
 
     return true;
