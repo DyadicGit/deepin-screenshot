@@ -1030,13 +1030,7 @@ void MainWindow::saveSpecificedPath(QString path)
     QVariantMap hints;
     QString fileDir = QUrl::fromLocalFile(QFileInfo(savePath).absoluteDir().absolutePath()).toString();
     QString filePath =  QUrl::fromLocalFile(savePath).toString();
-    QString command;
-    if (QFile("/usr/bin/dde-file-manager").exists()) {
-        command = QString("/usr/bin/dde-file-manager,%1?selectUrl=%2"
-                          ).arg(fileDir).arg(filePath);
-    } else {
-        command = QString("xdg-open,%1").arg(filePath);
-    }
+    QString command = QString("xdg-open,%1").arg(filePath);
 
     hints["x-deepin-action-_open"] = command;
 
