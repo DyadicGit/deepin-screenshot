@@ -1030,14 +1030,14 @@ void MainWindow::saveSpecificedPath(QString path)
     QVariantMap hints;
     QString fileDir = QUrl::fromLocalFile(QFileInfo(savePath).absoluteDir().absolutePath()).toString();
     QString filePath =  QUrl::fromLocalFile(savePath).toString();
-    QString command = QString("xdg-open,%1").arg(filePath);
-
+    QString command = QString("xdg-open %1").arg(fileDir);
     hints["x-deepin-action-_open"] = command;
 
     QString summary = QString(tr("Picture has been saved to %1")).arg(savePath);
 
     m_notifyDBInterface->Notify("Deepin Screenshot", 0,  "deepin-screenshot", "",
                                 summary, actions, hints, 0);
+    QProcess::execute(command);
     exitApp();
 }
 
@@ -1451,15 +1451,9 @@ void MainWindow::sendNotify(SaveAction saveAction, QString saveFilePath, const b
 
         QString fileDir  = QUrl::fromLocalFile(QFileInfo(saveFilePath).absoluteDir().absolutePath()).toString();
         QString filePath = QUrl::fromLocalFile(saveFilePath).toString();
-        QString command;
-        if (QFile("/usr/bin/dde-file-manager").exists()) {
-            command = QString("/usr/bin/dde-file-manager,%1?selectUrl=%2").arg(fileDir).arg(filePath);
-        }
-        else {
-            command = QString("xdg-open,%1").arg(filePath);
-        }
-
+        QString command = QString("xdg-open %1").arg(fileDir);
         hints["x-deepin-action-_open"] = command;
+        QProcess::execute(command);
     }
 
     qDebug() << "saveFilePath:" << saveFilePath;

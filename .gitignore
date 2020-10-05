@@ -27,3 +27,4 @@ include*/
 *.autosave
 .vscode
 *.user
+/.idea
